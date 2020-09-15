@@ -1,0 +1,98 @@
+version: "3.7"
+
+services:
+  #
+  # [ server stack ]
+  #
+  # - VueJs build
+  # - Express/NodeJs/GraphQL
+  # - MongoDb
+  #
+  api:
+    build: ./api
+    container_name: nodejs
+    restart: unless-stopped
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+      - IS_NODE=true
+      - MONGODB_URL=admin:secret@mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
+    ports:
+      - 4000:4000
+    depends_on:
+      - mongodb-server
+    networks:
+      - webappnetwork
+    volumes:
+      - api:/app
+      - node_modules:/app/node_modules
+
+  # client:
+  #   build: ./client
+  #   container_name: vuejs
+  #   ports:
+  #     - 3000:3000
+  #   restart: unless-stopped
+  #   volumes:
+  #     - client:/app
+  #     - node_modules:/app/node_modules
+  #   networks:
+  #     - webappnetwork
+  #   depends_on:
+  #     - api
+
+  mongodb-server:
+    image: mongo:4.4.1-bionic
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - mongodb:/data/configdb
+      - mongodb:/data/db
+    networks:
+      - webappnetwork
+
+  caddy:
+    image: caddy:2.1.1-alpine
+    container_name: caddyserver
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - SITE_ADDRESS=localhost
+      - PORT=4000
+    volumes:
+      - .caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+      # - client
+    networks:
+      - webappnetwork
+
+#
+# [ volumes definition ]
+#
+# creates Docker volumes which can be mounted by other containers too e.g. for backup
+# default should be local
+#
+volumes:
+  mongodb:
+  client:
+  api:
+  node_modules:
+  caddy_data:
+  caddy_config:
+
+#
+# [ networks definition ]
+# default should be bridge
+#
+networks:
+  webappnetwork:

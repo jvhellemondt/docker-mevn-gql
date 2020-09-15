@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  #
+  # - MongoDb
+  #
+
+  mongodb-server:
+    image: mongo:4.4.1-bionic
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - mongodb:/data/configdb
+      - mongodb:/data/db
+    networks:
+      - webappnetwork
+
+
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: mongoexpress
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8081:8081"
+  #   volumes:
+  #     - mongodb:/express
+  #   environment:
+  #     ME_CONFIG_MONGODB_SERVER: mongodb
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+  #   networks:
+  #     - webappnetwork
+  #   depends_on:
+  #     - mongodb-server
+
+#
+# [ volumes definition ]
+#
+# creates Docker volumes which can be mounted by other containers too e.g. for backup
+#
+volumes:
+  mongodb:
+
+#
+# [ networks definition ]
+#
+networks:
+  webappnetwork:
