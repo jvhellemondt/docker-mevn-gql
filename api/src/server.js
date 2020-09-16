@@ -35,7 +35,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 // Setup GraphQL
-const gqlPath = '/gql'
+const gqlPath = '/graphql'
 
 app.use(
   gqlPath,
