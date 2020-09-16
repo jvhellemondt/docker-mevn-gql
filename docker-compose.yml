@@ -4,7 +4,7 @@ services:
   #
   # [ server stack ]
   #
-  # - VueJs build
+  # - VueJs
   # - Express/NodeJs/GraphQL
   # - MongoDb
   #
@@ -19,27 +19,27 @@ services:
       - MONGODB_URL=admin:secret@mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
     ports:
       - 4000:4000
-    depends_on:
-      - mongodb-server
     networks:
       - webappnetwork
+    depends_on:
+      - mongodb-server
     volumes:
-      - api:/app
-      - node_modules:/app/node_modules
+      - backend
 
-  # client:
-  #   build: ./client
-  #   container_name: vuejs
-  #   ports:
-  #     - 3000:3000
-  #   restart: unless-stopped
-  #   volumes:
-  #     - client:/app
-  #     - node_modules:/app/node_modules
-  #   networks:
-  #     - webappnetwork
-  #   depends_on:
-  #     - api
+  client:
+    build: ./client
+    container_name: vuejs
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - frontend:/data
+      - frontend:/config
+    networks:
+      - webappnetwork
+    depends_on:
+      - api
 
   mongodb-server:
     image: mongo:4.4.1-bionic
@@ -56,26 +56,6 @@ services:
     networks:
       - webappnetwork
 
-  caddy:
-    image: caddy:2.1.1-alpine
-    container_name: caddyserver
-    restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
-    environment:
-      - SITE_ADDRESS=localhost
-      - PORT=4000
-    volumes:
-      - .caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - api
-      # - client
-    networks:
-      - webappnetwork
-
 #
 # [ volumes definition ]
 #
@@ -84,11 +64,8 @@ services:
 #
 volumes:
   mongodb:
-  client:
-  api:
-  node_modules:
-  caddy_data:
-  caddy_config:
+  frontend:
+  backend:
 
 #
 # [ networks definition ]

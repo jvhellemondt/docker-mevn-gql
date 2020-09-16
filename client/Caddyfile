@@ -1,0 +1,50 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+#
+# To use your own domain name (with automatic HTTPS), first make
+# sure your domain's A/AAAA DNS records are properly pointed to
+# this machine's public IP, then replace the line below with your
+# domain name.
+
+localhost {
+	# Set encoding. Encode (usually compresses) responses
+	encode zstd gzip
+	# Set this path to your site's directory.
+	root * /var/www/html
+	# Another common task is to set up a reverse proxy:
+	# reverse_proxy /gql* nodejs:4000
+
+	# Prefix stripping
+	## If you want the endpoint to be /foo,
+	## and the backend's actual endpoint is /bar
+	## The above method would request /foo/bar of the backend
+	## Thus, the request needs to be stripped to /bar
+	# ------
+	
+	route /api/graphql {
+		uri strip_prefix /api
+		reverse_proxy nodejs:4000
+	}
+	# Enable the static file server.
+	file_server
+
+	# Fallback to Vue if path is not found
+	@try_files {
+		not {
+			path /api/graphql
+		}
+		file {
+			try_files {path} /index.html
+		}
+	}
+	rewrite @try_files {http.matchers.file.relative}
+	# try_files {path} /index.html
+
+	# Or serve a PHP site through php-fpm:
+	# php_fastcgi localhost:9000
+
+	# Refer to the Caddy docs for more information:
+	# https://caddyserver.com/docs/caddyfile
+}
