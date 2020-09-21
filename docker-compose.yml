@@ -24,7 +24,7 @@ services:
     depends_on:
       - mongodb-server
     volumes:
-      - backend
+      - backend:/app/
 
   client:
     build: ./client

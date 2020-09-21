@@ -1,0 +1,12 @@
+{
+  "name": "docker-mevn-gql",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "docker-compose up -d",
+    "build": "docker-compose build",
+    "stop": "docker-compose down",
+    "clean": "docker-compose down -v",
+    "clean:all": "docker system prune -af"
+  }
+}
