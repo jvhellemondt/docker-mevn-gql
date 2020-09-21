@@ -59,9 +59,7 @@ const options = {
 // Boot server with mongoose
 mongoose
   .connect(uri, options)
-  .then(() =>
-    app.listen(port, console.warn(`The server started on port ${port}`)),
-  )
+  .then(() => console.log(`🚀 Server listening on port ${port}`))
   .catch(error => {
     throw error
   })
