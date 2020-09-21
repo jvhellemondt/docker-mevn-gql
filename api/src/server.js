@@ -10,14 +10,13 @@ const graphqlHttp = require('express-graphql').graphqlHTTP
 const mongoose = require('mongoose')
 
 const graphqlSchema = require('./schemas')
-const graphqlResolvers = require('./resolvers')
 
 // Setup express server
 const app = express()
 
 // Setup environment variables
 console.warn(
-  `Current environment set: ${process.env.NODE_ENV || 'development'}`,
+  `💚 Current environment set: ${process.env.NODE_ENV || 'development'}`,
 )
 let helmetOptions = { contentSecurityPolicy: false } // Check in production
 if (process.env.NODE_ENV !== 'production') {
@@ -41,13 +40,13 @@ app.use(
   gqlPath,
   graphqlHttp({
     schema: graphqlSchema,
-    rootValue: graphqlResolvers,
+    // rootValue: graphqlResolvers,
     graphiql: true,
   }),
 )
 
 // MongoDB settings
-console.warn(`Connecting to MongoDb on ${process.env.MONGODB_URL}`)
+console.warn(`🌐 Connecting to MongoDb on ${process.env.MONGODB_URL}`)
 const uri = `mongodb://${process.env.MONGODB_URL}`
 const options = {
   // user: `${process.env.MONGODB_USER}`,
@@ -59,7 +58,9 @@ const options = {
 // Boot server with mongoose
 mongoose
   .connect(uri, options)
-  .then(() => console.log(`🚀 Server listening on port ${port}`))
+  .then(() =>
+    app.listen(port, console.warn(`🚀 The server started on port ${port} 🔥`)),
+  )
   .catch(error => {
     throw error
   })

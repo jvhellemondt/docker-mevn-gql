@@ -1,10 +1,5 @@
 {
-  "name": "timey",
-  "version": "0.0.1",
   "main": "src/server.js",
-  "author": "Jens van Hellemondt",
-  "license": "MIT",
-  "private": true,
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
@@ -19,8 +14,10 @@
     "express": "^4.17.1",
     "express-graphql": "^0.11.0",
     "graphql": "^15.3.0",
+    "graphql-compose": "^7.21.1",
+    "graphql-compose-mongoose": "^8.0.3",
     "helmet": "^4.1.1",
-    "mongoose": "^5.10.3",
+    "mongoose": "^5.10.6",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
