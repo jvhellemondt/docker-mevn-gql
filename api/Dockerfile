@@ -1,5 +1,5 @@
 # Select version from https://hub.docker.com/_/node
-FROM node:alpine
+FROM node:lts-alpine
 
 # Create a directory to hold the application code inside the image
 WORKDIR /app

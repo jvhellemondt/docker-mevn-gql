@@ -1,5 +1,5 @@
 # ========= BUILD =========
-FROM node:alpine as dist
+FROM node:lts-alpine as dist
 
 # Create a directory to hold the application code inside the image
 WORKDIR /app
