@@ -34,6 +34,12 @@ sudo apt install docker-compose
 
 `docker-compose up -d`
 
+### Using the app
+
+The app runs at localhost. As it is using Caddy, it is automatically https.
+
+There is an example running by default. This example contains views (Vue) and the link to graphiql. Do note, the cked is also served on localhost:4000/api. However, this is served through http. Therefore you will not be able to do mutations.
+
 ## Mongo shell
 
 ### Install mongo shell
