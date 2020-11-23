@@ -1,5 +1,5 @@
 # ========= BUILD =========
-FROM node:14.10.1-alpine3.12 as dist
+FROM node:alpine as dist
 
 # Create a directory to hold the application code inside the image
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN yarn build
 
 # ========= RUN =========
 
-FROM caddy:2.1.1-alpine
+FROM caddy:latest
 
 COPY Caddyfile /etc/caddy/Caddyfile
 

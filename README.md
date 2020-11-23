@@ -10,20 +10,16 @@ Make sure docker and docker-compose is installed.
 
 #### Uninstall old versions
 
-Older versions of Docker were called docker, docker.io, or docker-engine. If these are installed, uninstall them:
+Start clean:
 
 `sudo apt-get remove docker docker-engine docker.io containerd runc`
 
 #### Install docker
 
-If the repository is set up, install via:
-
 ```bash
 sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install docker docker-io
 ```
-
-Otherwise, [set up the repository](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
 
 ### Docker-compose
 

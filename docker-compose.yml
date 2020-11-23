@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 services:
   #
@@ -42,7 +42,7 @@ services:
       - api
 
   mongodb-server:
-    image: mongo:4.4.1-bionic
+    image: mongo:latest
     container_name: mongodb
     restart: unless-stopped
     ports:
