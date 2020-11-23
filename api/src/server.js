@@ -1,15 +1,15 @@
 'use strict'
 
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
-const compression = require('compression')
-const helmet = require('helmet')
-const graphqlHttp = require('express-graphql').graphqlHTTP
-const mongoose = require('mongoose')
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import morgan from 'morgan'
+import compression from 'compression'
+import helmet from 'helmet'
+import { graphqlHTTP } from 'express-graphql'
+import mongoose from 'mongoose'
 
-const graphqlSchema = require('./schemas')
+import graphqlSchema from './schemas'
 
 // Setup express server
 const app = express()
@@ -38,7 +38,7 @@ const gqlPath = '/graphql'
 
 app.use(
   gqlPath,
-  graphqlHttp({
+  graphqlHTTP({
     schema: graphqlSchema,
     // rootValue: graphqlResolvers,
     graphiql: true,
