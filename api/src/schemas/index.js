@@ -1,29 +1,38 @@
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 import { schemaComposer } from 'graphql-compose';
+
 import { user, post } from '../models';
+import { onlyAuthenticatedWrapper, onlyAuthenticated } from '../middleware/authorization.js';
 
 const customizationOptions = {};
 const UserTC = composeWithMongoose(user, customizationOptions);
 
+// @todo: implement login
+// https://github.com/graphql-compose/graphql-compose-mongoose/issues/158
+//
 schemaComposer.Query.addFields({
-  userById: UserTC.getResolver('findById'),
-  userByIds: UserTC.getResolver('findByIds'),
-  userOne: UserTC.getResolver('findOne'),
-  userMany: UserTC.getResolver('findMany'),
-  userCount: UserTC.getResolver('count'),
-  userConnection: UserTC.getResolver('connection'),
-  userPagination: UserTC.getResolver('pagination'),
+  ...onlyAuthenticatedWrapper({
+    userById: UserTC.getResolver('findById'),
+    userByIds: UserTC.getResolver('findByIds'),
+    userOne: UserTC.getResolver('findOne'),
+    userMany: UserTC.getResolver('findMany'),
+    userCount: UserTC.getResolver('count'),
+    userConnection: UserTC.getResolver('connection'),
+    userPagination: UserTC.getResolver('pagination'),
+  }),
 });
 
 schemaComposer.Mutation.addFields({
-  userCreateOne: UserTC.getResolver('createOne'),
-  userCreateMany: UserTC.getResolver('createMany'),
-  userUpdateById: UserTC.getResolver('updateById'),
-  userUpdateOne: UserTC.getResolver('updateOne'),
-  userUpdateMany: UserTC.getResolver('updateMany'),
-  userRemoveById: UserTC.getResolver('removeById'),
-  userRemoveOne: UserTC.getResolver('removeOne'),
-  userRemoveMany: UserTC.getResolver('removeMany'),
+  userCreateOne: UserTC.getResolver('createOne', [onlyAuthenticated]),
+  userCreateMany: UserTC.getResolver('createMany', [onlyAuthenticated]),
+  userUpdateById: UserTC.getResolver('updateById', [onlyAuthenticated]),
+  userUpdateOne: UserTC.getResolver('updateOne', [onlyAuthenticated]),
+  userUpdateMany: UserTC.getResolver('updateMany', [onlyAuthenticated]),
+  userRemoveById: UserTC.getResolver('removeById', [onlyAuthenticated]),
+  userRemoveOne: UserTC.getResolver('removeOne', [onlyAuthenticated]),
+  userRemoveMany: UserTC.getResolver('removeMany', [onlyAuthenticated]),
+
+  // authenticate: UserTC.getResolver('authenticate'),
 });
 
 const PostTC = composeWithMongoose(post, customizationOptions);
