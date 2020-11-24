@@ -17,6 +17,7 @@ services:
       - NODE_ENV=production
       - IS_NODE=true
       - MONGODB_URL=admin:secret@mongodb:27017/?compressors=zlib&gssapiServiceName=mongodb
+      - JWT_SECRET=3f1d9f7c8b9eebcea072a9f4c33c1d8b0469af43c2ebdc06f6695180d5b013fc
     ports:
       - 4000:4000
     networks:
