@@ -24,6 +24,4 @@ userSchema.pre('save', function() {
   this.password = hashedPassword;
 });
 
-const user = mongoose.model('user', userSchema);
-
-export default user;
+export default mongoose.model('user', userSchema);
