@@ -13,17 +13,17 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-graphql": "^0.11.0",
+    "express-graphql": "^0.12.0",
     "graphql": "^15.3.0",
     "graphql-compose": "^7.21.1",
-    "graphql-compose-mongoose": "^8.0.3",
+    "graphql-compose-mongoose": "^9.0.0",
     "helmet": "^4.1.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.6",
+    "mongoose": "^5.10.15",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.7",
+    "@babel/core": "^7.12.8",
     "@babel/node": "^7.12.6",
     "@babel/preset-env": "^7.12.7",
     "nodemon": "^2.0.6"
