@@ -1,4 +1,4 @@
-import post from './postModel.js';
-import user from './userModel.js';
+import PostModel from './PostModel.js';
+import UserModel from './UserModel.js';
 
-export { post, user };
+export { PostModel, UserModel };

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -19,9 +19,8 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-userSchema.pre('save', function() {
-  const hashedPassword = bcrypt.hashSync(this.password, 12);
-  this.password = hashedPassword;
+UserSchema.pre('save', function () {
+  this.password = bcrypt.hashSync(this.password, 12);
 });
 
-export default mongoose.model('user', userSchema);
+export default mongoose.model('User', UserSchema);
