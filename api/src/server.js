@@ -6,60 +6,42 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { graphqlHTTP } from 'express-graphql';
 import mongoose from 'mongoose';
-
+//
 import graphqlSchema from './schemas';
 import authenticated from './middleware/authenticated.js';
 
-// Setup express server
-const app = express();
-
 // Setup environment variables
 const isProduction = process.env.NODE_ENV === 'production';
-
+if (!isProduction) require('dotenv').config({ path: '../.env.local' });
 console.warn(`💚 Current environment set: ${process.env.NODE_ENV || 'development'}`);
-
-if (!isProduction) {
-  const dotenv = require('dotenv');
-  dotenv.config({ path: '../.env.local' });
-}
 const port = process.env.PORT;
-
+// Setup express server
+const app = express();
 // Other app requirements
 app.use(helmet({ contentSecurityPolicy: isProduction })); // Check in production
-app.use(compression());
-app.use(morgan('tiny'));
-app.use(cors());
+app.use(compression({}));
+app.use(morgan('tiny', {}));
+app.use(cors({}));
 app.use(bodyParser.json());
-
 // Setup middleware
-app.use(authenticated)
-
+app.use(authenticated);
 // Setup GraphQL
-const gqlPath = '/graphql';
-
 app.use(
-  gqlPath,
+  '/graphql',
   graphqlHTTP(async (req) => ({
     schema: graphqlSchema,
-    // rootValue: graphqlResolvers,
     graphiql: true,
     context: {
       req,
-    }
+    },
   })),
 );
-
-// MongoDB settings
+// Boot mongoose connection to MongoDB
 console.warn(`🌐 Connecting to MongoDb on ${process.env.MONGODB_URL}`);
-const uri = `mongodb://${process.env.MONGODB_URL}`;
-const options = {
+mongoose.connect(`mongodb://${process.env.MONGODB_URL}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-};
-
-// Boot server with mongoose
-mongoose.connect(uri, options);
-
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => app.listen(port, console.warn(`🚀 The server started on port ${port} 🔥`)));
