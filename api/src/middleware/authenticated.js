@@ -1,20 +1,19 @@
 // https://github.com/graphql-compose/graphql-compose-mongoose/issues/158
-
 import jwt from 'jsonwebtoken';
 
 export default (req, res, next) => {
-    const token = req.headers['x-auth-token'];
-    if(!token || token === '') {
+    const accessToken = req.headers['x-auth-access-token'];
+    if (!accessToken || accessToken === '') {
         req.isAuthenticated = false;
         return next();
     }
     let decodedToken;
     try {
-        decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-    } catch(err) {
+        decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+    } catch (err) {
         req.isAuthenticated = false;
         return next();
-    };
+    }
     req.isAuthenticated = true;
     req.appRoles = decodedToken.appRoles;
     req.userId = decodedToken.userId;
