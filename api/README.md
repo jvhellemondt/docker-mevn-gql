@@ -16,11 +16,11 @@ Start developing your backend with hot reload by following these steps.
 
 ### Development server from root directory
 
-`yarn --cwd ./api/ start`
+`yarn --cwd ./api/ serve`
 
 ### Development server from this directory
 
-`yarn start`
+`yarn serve`
 
 ---
 

@@ -38,7 +38,7 @@ sudo apt install docker-compose
 
 The app runs at localhost. As it is using Caddy, it is automatically https.
 
-There is an example running by default. This example contains views (Vue) and the link to graphiql. Do note, the cked is also served on localhost:4000/api. However, this is served through http. Therefore you will not be able to do mutations.
+There is an example running by default. This example contains views (Vue) and the link to graphiql. Do note, the backend is served on localhost:4000/api. However, this is served through http. Therefore, you will not be able to do mutations.
 
 ## Mongo shell
 
