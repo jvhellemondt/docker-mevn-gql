@@ -6,9 +6,10 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { graphqlHTTP } from 'express-graphql';
 import mongoose from 'mongoose';
-//
-import graphqlSchema from './schemas';
-import authenticated from './middleware/authenticated.js';
+import 'module-alias/register';
+
+import graphqlSchema from '@/schemas';
+import authenticated from '@/middleware/authenticated.js';
 
 // Setup environment variables
 const isProduction = process.env.NODE_ENV === 'production';
