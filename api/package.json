@@ -8,9 +8,6 @@
         "build": "yarn clean && yarn build-server",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "_moduleAliases": {
-        "@": "./src"
-    },
     "keywords": [],
     "dependencies": {
         "bcrypt": "^5.0.0",

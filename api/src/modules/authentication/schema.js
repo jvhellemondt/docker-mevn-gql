@@ -1,6 +1,7 @@
 import { schemaComposer } from 'graphql-compose';
-import { onlyAuthenticated } from '@/middleware/authorization.js';
-import { UserTC } from '@/models';
+
+import { onlyAuthenticated } from '~/permissions/middleware';
+import UserTC from './models';
 
 schemaComposer.Query.addFields({
   accessToken: {

@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
-
-const { schemaComposer } = require('graphql-compose');
 
 schemaComposer.createObjectTC({
   name: 'AccessToken',
@@ -36,8 +35,8 @@ UserSchema.pre('save', function () {
   this.password = bcrypt.hashSync(this.password, 12);
 });
 
-const UserModel = mongoose.model('User', UserSchema);
-const UserTC = composeWithMongoose(UserModel, {});
+const Models = mongoose.model('User', UserSchema);
+const UserTC = composeWithMongoose(Models, {});
 
 UserTC.addResolver({
   kind: 'mutation',
@@ -52,7 +51,7 @@ UserTC.addResolver({
     context,
   }) => {
     try {
-      const user = await UserModel.findOne({ username: args.username });
+      const user = await Models.findOne({ username: args.username });
       if (!user) return Promise.reject(new Error('Credentials are incorrect'));
 
       const isEqual = await bcrypt.compare(args.password, user.password);

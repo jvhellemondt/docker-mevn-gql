@@ -15,7 +15,6 @@ export default (req, res, next) => {
         return next();
     }
     req.isAuthenticated = true;
-    req.appRoles = decodedToken.appRoles;
-    req.userId = decodedToken.userId;
+    req.username = decodedToken.username;
     next();
 }
