@@ -1,7 +1,8 @@
 import { schemaComposer } from 'graphql-compose';
 
-import { onlyAuthenticated } from '~/permissions/middleware';
-import UserTC from './models';
+import { onlyAuthenticated } from './middleware';
+import { UserTC } from './type';
+import { authenticateResolver } from './resolver';
 
 schemaComposer.Query.addFields({
   accessToken: {
@@ -29,7 +30,7 @@ schemaComposer.Mutation.addFields({
   userRemoveOne: UserTC.getResolver('removeOne', [onlyAuthenticated]),
   userRemoveMany: UserTC.getResolver('removeMany', [onlyAuthenticated]),
 
-  authenticate: UserTC.getResolver('authenticate'),
+  authenticate: authenticateResolver,
 });
 
 export default schemaComposer.buildSchema();

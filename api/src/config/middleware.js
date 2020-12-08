@@ -5,11 +5,11 @@ import compression from 'compression';
 import helmet from 'helmet';
 
 import graphql from '$/graphql';
-import authentication from '~/authentication/middleware';
+import { expressAuthentication } from '~/authentication/middleware';
 
 export default app => {
   // App middleware
-  app.use(authentication);
+  app.use(expressAuthentication);
   app.use('/graphql', graphql);
 
   // third-party middleware
