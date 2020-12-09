@@ -39,3 +39,34 @@ export const authenticateResolver = schemaComposer.createResolver({
     }
   },
 });
+
+export const authorizedResolver = schemaComposer.createResolver({
+  kind: 'query',
+  name: 'authorize',
+  type: 'AccessToken!',
+  resolve: async ({
+    source,
+    args,
+    context,
+    info,
+  }) => {
+    try {
+      const user = await UserModel.findOne({ username: args.username });
+      if (!user) return Promise.reject(new Error('Credentials are incorrect'));
+
+      const isEqual = await bcrypt.compare(args.password, user.password);
+      if (!isEqual) return Promise.reject(new Error('Credentials are incorrect.'));
+
+      const accessToken = jwt.sign({ user: user.id },
+        config.JWT_SECRET,
+        { expiresIn: config.JWT_EXPIRATION },
+      );
+
+      return {
+        accessToken,
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+});

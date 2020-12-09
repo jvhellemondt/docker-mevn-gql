@@ -1,14 +1,10 @@
 import { schemaComposer } from 'graphql-compose';
 
 import { onlyAuthenticated, onlyAuthenticatedWrapper } from './middleware';
-import { UserTC } from './type';
-import { authenticateResolver } from './resolver';
+import { UserTC } from 'api/src/modules/authentication/types.js';
+import { authenticateResolver, authorizedResolver } from './resolver';
 
 schemaComposer.Query.addFields({
-  accessToken: {
-    type: 'String',
-    description: 'Token of authenticated user.',
-  },
   ...onlyAuthenticatedWrapper({
     userById: UserTC.getResolver('findById'),
     userByIds: UserTC.getResolver('findByIds'),
@@ -17,6 +13,8 @@ schemaComposer.Query.addFields({
     userCount: UserTC.getResolver('count'),
     userConnection: UserTC.getResolver('connection'),
     userPagination: UserTC.getResolver('pagination'),
+
+    authorized: authorizedResolver
   }),
 });
 
