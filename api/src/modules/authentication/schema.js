@@ -1,6 +1,6 @@
 import { schemaComposer } from 'graphql-compose';
 
-import { onlyAuthenticated } from './middleware';
+import { onlyAuthenticated, onlyAuthenticatedWrapper } from './middleware';
 import { UserTC } from './type';
 import { authenticateResolver } from './resolver';
 
@@ -9,19 +9,19 @@ schemaComposer.Query.addFields({
     type: 'String',
     description: 'Token of authenticated user.',
   },
-  // ...onlyAuthenticatedWrapper({
-  userById: UserTC.getResolver('findById'),
-  userByIds: UserTC.getResolver('findByIds'),
-  userOne: UserTC.getResolver('findOne'),
-  userMany: UserTC.getResolver('findMany'),
-  userCount: UserTC.getResolver('count'),
-  userConnection: UserTC.getResolver('connection'),
-  userPagination: UserTC.getResolver('pagination'),
-  // }),
+  ...onlyAuthenticatedWrapper({
+    userById: UserTC.getResolver('findById'),
+    userByIds: UserTC.getResolver('findByIds'),
+    userOne: UserTC.getResolver('findOne'),
+    userMany: UserTC.getResolver('findMany'),
+    userCount: UserTC.getResolver('count'),
+    userConnection: UserTC.getResolver('connection'),
+    userPagination: UserTC.getResolver('pagination'),
+  }),
 });
 
 schemaComposer.Mutation.addFields({
-  userCreateOne: UserTC.getResolver('createOne'),
+  userCreateOne: UserTC.getResolver('createOne', [onlyAuthenticated]),
   userCreateMany: UserTC.getResolver('createMany', [onlyAuthenticated]),
   userUpdateById: UserTC.getResolver('updateById', [onlyAuthenticated]),
   userUpdateOne: UserTC.getResolver('updateOne', [onlyAuthenticated]),
