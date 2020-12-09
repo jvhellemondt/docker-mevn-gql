@@ -4,11 +4,7 @@ import { schemaComposer } from 'graphql-compose';
 
 schemaComposer.createObjectTC({
   name: 'AccessToken',
-  fields: {
-    id: 'ID!',
-    username: 'String!',
-    accessToken: 'String!',
-  },
+  fields: { accessToken: 'String!' },
 });
 
 const UserSchema = new mongoose.Schema({
