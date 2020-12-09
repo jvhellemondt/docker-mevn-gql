@@ -1,6 +1,6 @@
 import { schemaComposer } from 'graphql-compose';
 
-import AuthenticationSchema from '~/authentication/schema';
+import AuthenticationSchema from '~/authentication/schemas';
 
 schemaComposer.merge(AuthenticationSchema);
 

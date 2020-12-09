@@ -1,8 +1,8 @@
 import { schemaComposer } from 'graphql-compose';
 
-import { onlyAuthenticated, onlyAuthenticatedWrapper } from './middleware';
-import { UserTC } from 'api/src/modules/authentication/types.js';
-import { authenticateResolver, authorizedResolver } from './resolver';
+import { onlyAuthenticated, onlyAuthenticatedWrapper } from '~/authentication/middlewares.js';
+import { UserTC } from '~/authentication/types.js';
+import { authenticateResolver, authorizedResolver } from '~/authentication/resolvers.js';
 
 schemaComposer.Query.addFields({
   ...onlyAuthenticatedWrapper({
@@ -14,7 +14,7 @@ schemaComposer.Query.addFields({
     userConnection: UserTC.getResolver('connection'),
     userPagination: UserTC.getResolver('pagination'),
 
-    authorized: authorizedResolver
+    authorized: authorizedResolver,
   }),
 });
 
