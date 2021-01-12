@@ -5,11 +5,12 @@ import { UserTC } from '~/authentication/types.js';
 import { authenticateResolver, authorizedResolver } from '~/authentication/resolvers.js';
 
 schemaComposer.Query.addFields({
+  userMany: UserTC.getResolver('findMany'),
+
   ...onlyAuthenticatedWrapper({
     userById: UserTC.getResolver('findById'),
     userByIds: UserTC.getResolver('findByIds'),
     userOne: UserTC.getResolver('findOne'),
-    userMany: UserTC.getResolver('findMany'),
     userCount: UserTC.getResolver('count'),
     userConnection: UserTC.getResolver('connection'),
     userPagination: UserTC.getResolver('pagination'),
@@ -32,4 +33,3 @@ schemaComposer.Mutation.addFields({
 });
 
 export default schemaComposer.buildSchema();
-

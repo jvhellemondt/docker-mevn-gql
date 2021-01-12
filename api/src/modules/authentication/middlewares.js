@@ -32,6 +32,6 @@ export const expressAuthentication = (req, res, next) => {
     return next();
   }
   req.isAuthenticated = true;
-  req.userId = decodedToken.user;
+  req.user = decodedToken.user;
   return next();
 };
