@@ -13,7 +13,7 @@ mongoose.connect(`mongodb://${mongoConnectionString}`, {
   useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+const mongodb = mongoose.connection;
+mongodb.on('error', console.error.bind(console, 'connection error:'));
 
-export default db;
+export default mongodb;
