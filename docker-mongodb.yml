@@ -1,10 +1,6 @@
 version: "3.8"
 
 services:
-  #
-  # - MongoDb
-  #
-
   mongodb-server:
     image: mongo:latest
     container_name: mongodb
@@ -20,6 +16,20 @@ services:
     networks:
       - webappnetwork
 
+  redis-server:
+    image: redis:alpine3.12
+    container_name: redisdb
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    environment:
+      - REDIS_HOST=redis
+    volumes:
+      - redis:/data
+    networks:
+      - webappnetwork
+    depends_on:
+      - mongodb-server
 
 #  mongo-express:
 #    image: mongo-express:latest
@@ -41,10 +51,9 @@ services:
 #
 # [ volumes definition ]
 #
-# creates Docker volumes which can be mounted by other containers too e.g. for backup
-#
 volumes:
   mongodb:
+  redis:
 
 #
 # [ networks definition ]
