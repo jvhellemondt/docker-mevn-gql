@@ -18,6 +18,8 @@ const {
   MONGO_PASS = null,
   JWT_SECRET = null,
   JWT_EXPIRATION = null,
+  REDIS_HOST = null,
+  REDIS_PORT = null,
 } = process.env;
 
 NODE_ENV ? console.warn(`💚 Current environment set: ${NODE_ENV}`) : console.error(`💔 No environment set`);
@@ -33,6 +35,8 @@ export {
   MONGO_DB,
   MONGO_USER,
   MONGO_PASS,
+  REDIS_HOST,
+  REDIS_PORT,
   JWT_SECRET,
   JWT_EXPIRATION,
   IS_TEST,
