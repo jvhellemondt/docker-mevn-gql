@@ -23,7 +23,7 @@ services:
     ports:
       - 6379:6379
     environment:
-      - REDIS_HOST=redis
+      - REDIS_HOST=redisdb
     volumes:
       - redis:/data
     networks:
