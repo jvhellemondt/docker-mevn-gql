@@ -21,6 +21,7 @@
         "graphql-compose": "^7.21.1",
         "graphql-compose-mongoose": "^9.0.0",
         "helmet": "^4.1.1",
+        "ioredis": "^4.19.4",
         "jsonwebtoken": "^8.5.1",
         "module-alias": "^2.2.2",
         "mongoose": "^5.10.15",
