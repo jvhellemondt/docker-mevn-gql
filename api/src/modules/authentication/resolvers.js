@@ -25,7 +25,7 @@ export const authenticateResolver = schemaComposer.createResolver({
       const isEqual = await user.comparePassword(password);
       if (!isEqual) return Promise.reject(new Error('Credentials are incorrect.'));
 
-      const accessToken = jwt.sign({ user: user.id },
+      const accessToken = jwt.sign({ userId: user.id },
         config.JWT_SECRET,
         { expiresIn: config.JWT_EXPIRATION },
       );

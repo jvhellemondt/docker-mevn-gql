@@ -1,8 +1,8 @@
 import { schemaComposer } from 'graphql-compose';
 
-import { UserTC } from '~/authentication/types.js';
-import { onlyAuthenticated, onlyGuest } from '~/authentication/middlewares.js';
-import { authenticateResolver, authorizedResolver } from '~/authentication/resolvers.js';
+import { UserTC } from './types.js';
+import { onlyAuthenticated, onlyGuest } from './middlewares.js';
+import { authenticateResolver, authorizedResolver } from './resolvers.js';
 
 UserTC.addResolver(authenticateResolver);
 UserTC.addResolver(authorizedResolver);

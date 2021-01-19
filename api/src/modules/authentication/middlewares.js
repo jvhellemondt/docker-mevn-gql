@@ -2,37 +2,39 @@
 import jwt from 'jsonwebtoken';
 
 import config from '$/setup';
+import { UserModel } from './models.js';
 
-export const expressAuthentication = (req, res, next) => {
-  const authorizationHeader = req.headers['authorization'];
-  if (!authorizationHeader.startsWith('bearer ')) {
-    req.isAuthenticated = false;
-    return next();
-  }
-
-  const accessToken = authorizationHeader.substring(7, authorizationHeader.length);
-  if (!accessToken) {
-    req.isAuthenticated = false;
-    return next();
-  }
-
+export const expressAuthentication = async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(accessToken, config.JWT_SECRET);
-    req.user = decodedToken.user;
-    req.isAuthenticated = true;
+    const { headers: { authorization } } = request;
+    if (!authorization) new Error('No authorization on request');
+    if (!authorization.startsWith('bearer ')) new Error('Bearer authentication should be applied');
+
+    const accessToken = authorization.substring(7, authorization.length);
+    if (!accessToken) new Error('No access token in authorization');
+
+    const { userId } = jwt.verify(accessToken, config.JWT_SECRET);
+    const user = await UserModel.findById(userId);
+    if (!user) return new Error(`No user was found with id ${userId}`);
+
+    Object.assign(request, {
+      user,
+      accessToken,
+    });
     return next();
   } catch (e) {
-    req.isAuthenticated = false;
     return next();
   }
 };
 
 export const onlyAuthenticated = async (resolve, source, args, context, info) => {
-  if (context.request.isAuthenticated) return resolve(source, args, context, info);
-  throw new Error('You must login to view this.');
+  const { user } = context;
+  if (!user) return Promise.reject(new Error('You must login to perform this operation'));
+  return resolve(source, args, context, info);
 };
 
 export const onlyGuest = async (resolve, source, args, context, info) => {
-  if (!context.request.isAuthenticated) return resolve(source, args, context, info);
-  throw new Error('This action cannot be performed while logged in.');
+  const { user } = context;
+  if (user) return Promise.reject(new Error('This operation cannot be performed while logged in'));
+  return resolve(source, args, context, info);
 };
