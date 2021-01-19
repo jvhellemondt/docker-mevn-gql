@@ -27,21 +27,3 @@ UserSchema.methods.comparePassword = function (password) {
 };
 
 export const UserModel = mongoose.model('User', UserSchema);
-
-const accountSchema = new mongoose.Schema({
-    verification: {
-      verified: {
-        type: Boolean,
-        default: false,
-      },
-      token: String,
-      expiresIn: Date,
-    },
-    resetPassword: {
-      token: String,
-      expiresIn: Date,
-    },
-  },
-  { timestamps: true });
-
-export const AccountModel = mongoose.model('Account', accountSchema);

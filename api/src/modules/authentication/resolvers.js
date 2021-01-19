@@ -5,6 +5,7 @@ import { UserModel } from './models.js';
 import config from '$/setup';
 
 export const authenticateResolver = schemaComposer.createResolver({
+  kind: 'mutation',
   name: 'authenticate',
   args: {
     username: 'String!',
@@ -38,11 +39,11 @@ export const authenticateResolver = schemaComposer.createResolver({
 export const authorizedResolver = schemaComposer.createResolver({
   kind: 'query',
   name: 'authorize',
-  type: 'AccessToken!',
+  type: 'UserId!',
   resolve: async ({ context: { request } }) => {
     try {
       return {
-        accessToken: `${request.user}`,
+        userId: `${request.user}`,
       };
     } catch (error) {
       return Promise.reject(error);

@@ -8,4 +8,9 @@ schemaComposer.createObjectTC({
   fields: { accessToken: 'String!' },
 });
 
+schemaComposer.createObjectTC({
+  name: 'UserId',
+  fields: { userId: 'String!' },
+});
+
 export const UserTC = composeWithMongoose(UserModel).removeField('password');

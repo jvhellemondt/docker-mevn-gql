@@ -1,8 +1,11 @@
 import { schemaComposer } from 'graphql-compose';
 
-import { onlyAuthenticated } from '~/authentication/permissions.js';
 import { UserTC } from '~/authentication/types.js';
+import { onlyAuthenticated, onlyGuest } from '~/authentication/middlewares.js';
 import { authenticateResolver, authorizedResolver } from '~/authentication/resolvers.js';
+
+UserTC.addResolver(authenticateResolver);
+UserTC.addResolver(authorizedResolver);
 
 schemaComposer.Query.addFields({
   userById: UserTC.getResolver('findById', [onlyAuthenticated]),
@@ -13,12 +16,10 @@ schemaComposer.Query.addFields({
   userConnection: UserTC.getResolver('connection', [onlyAuthenticated]),
   userPagination: UserTC.getResolver('pagination', [onlyAuthenticated]),
 
-  authorized: authorizedResolver,
-})
+  userAuthorize: UserTC.getResolver('authorize', [onlyAuthenticated]),
+});
 
 schemaComposer.Mutation.addFields({
-  authenticate: authenticateResolver,
-
   userCreateOne: UserTC.getResolver('createOne', [onlyAuthenticated]),
   userCreateMany: UserTC.getResolver('createMany', [onlyAuthenticated]),
   userUpdateById: UserTC.getResolver('updateById', [onlyAuthenticated]),
@@ -27,6 +28,8 @@ schemaComposer.Mutation.addFields({
   userRemoveById: UserTC.getResolver('removeById', [onlyAuthenticated]),
   userRemoveOne: UserTC.getResolver('removeOne', [onlyAuthenticated]),
   userRemoveMany: UserTC.getResolver('removeMany', [onlyAuthenticated]),
-})
+
+  userAuthenticate: UserTC.getResolver('authenticate', [onlyGuest]),
+});
 
 export default schemaComposer.buildSchema();
