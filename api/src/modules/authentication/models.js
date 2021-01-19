@@ -1,11 +1,5 @@
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
-import { schemaComposer } from 'graphql-compose';
-
-schemaComposer.createObjectTC({
-  name: 'AccessToken',
-  fields: { accessToken: 'String!' },
-});
 
 const UserSchema = new mongoose.Schema({
     username: {
