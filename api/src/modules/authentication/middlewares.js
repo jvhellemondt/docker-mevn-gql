@@ -28,13 +28,13 @@ export const expressAuthentication = async (request, response, next) => {
 };
 
 export const onlyAuthenticated = async (resolve, source, args, context, info) => {
-  const { user } = context;
+  const { user } = context.request;
   if (!user) return Promise.reject(new Error('You must login to perform this operation'));
   return resolve(source, args, context, info);
 };
 
 export const onlyGuest = async (resolve, source, args, context, info) => {
-  const { user } = context;
+  const { user } = context.request;
   if (user) return Promise.reject(new Error('This operation cannot be performed while logged in'));
   return resolve(source, args, context, info);
 };
