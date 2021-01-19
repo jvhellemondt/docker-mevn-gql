@@ -1,12 +1,12 @@
 import * as constant from './constants';
 import './aliases';
 import middlewareConfig from './middleware';
-import mongodbConnection from './mongodb.js';
 import initializeExpress from './express';
 
 const initializeServer = (app) => {
   try {
-    mongodbConnection();
+    import('./redis.js');
+    import('./mongodb.js');
     initializeExpress(app);
   } catch (error) {
     console.error(error);

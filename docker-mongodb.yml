@@ -13,8 +13,15 @@ services:
     volumes:
       - mongodb:/data/configdb
       - mongodb:/data/db
-    networks:
-      - webappnetwork
+
+  redis-server:
+    image: redis:alpine3.12
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
 
 #  mongo-express:
 #    image: mongo-express:latest
@@ -38,9 +45,4 @@ services:
 #
 volumes:
   mongodb:
-
-#
-# [ networks definition ]
-#
-networks:
-  webappnetwork:
+  redis:
