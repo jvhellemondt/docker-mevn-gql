@@ -1,7 +1,7 @@
 // https://github.com/graphql-compose/graphql-compose-mongoose/issues/158
 import jwt from 'jsonwebtoken';
 
-import config from '$/config';
+import config from '$/setup';
 
 export const onlyAuthenticated = async (resolve, source, args, context, info) => {
   if (context.request.isAuthenticated) return resolve(source, args, context, info);

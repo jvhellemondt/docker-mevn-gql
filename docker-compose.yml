@@ -36,7 +36,7 @@ services:
       - 443:443
     volumes:
       - frontend:/data
-      - frontend:/config
+      - frontend:/setup
     networks:
       - webappnetwork
     depends_on:

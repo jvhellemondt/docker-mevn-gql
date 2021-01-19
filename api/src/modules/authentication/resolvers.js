@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { schemaComposer } from 'graphql-compose';
 
 import { UserModel } from './models.js';
-import config from '$/config';
+import config from '$/setup';
 
 export const authenticateResolver = schemaComposer.createResolver({
   name: 'authenticate',

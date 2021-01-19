@@ -16,21 +16,6 @@ services:
     networks:
       - webappnetwork
 
-  redis-server:
-    image: redis:alpine3.12
-    container_name: redisdb
-    restart: unless-stopped
-    ports:
-      - 6379:6379
-    environment:
-      - REDIS_HOST=redisdb
-    volumes:
-      - redis:/data
-    networks:
-      - webappnetwork
-    depends_on:
-      - mongodb-server
-
 #  mongo-express:
 #    image: mongo-express:latest
 #    container_name: mongoexpress
@@ -53,7 +38,6 @@ services:
 #
 volumes:
   mongodb:
-  redis:
 
 #
 # [ networks definition ]
