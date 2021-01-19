@@ -3,35 +3,19 @@ import jwt from 'jsonwebtoken';
 
 import config from '$/setup';
 
-export const onlyAuthenticated = async (resolve, source, args, context, info) => {
-  if (context.request.isAuthenticated) return resolve(source, args, context, info);
-  throw new Error('You must be authorized');
-};
-
-export const onlyAuthenticatedWrapper = (resolvers) => {
-  Object.keys(resolvers).forEach(key => {
-    resolvers[key] = resolvers[key].wrapResolve(next => async response => {
-      if (response.context.request.isAuthenticated) return next(response);
-      throw new Error('You must login to view this.');
-    });
-  });
-  return resolvers;
-};
-
 export const expressAuthentication = (req, res, next) => {
-  const accessToken = req.headers['x-auth-access-token'];
-  if (!accessToken || accessToken === '') {
-    req.isAuthenticated = false;
-    return next();
-  }
-  let decodedToken;
   try {
-    decodedToken = jwt.verify(accessToken, config.JWT_SECRET);
-  } catch (err) {
+    const authorizationHeader = req.headers['authorization'];
+    if (!authorizationHeader.startsWith('bearer ')) new Error('Authorization token must start with Bearer');
+
+    const accessToken = authorizationHeader.substring(7, authorizationHeader.length);
+    if (!accessToken) new Error('No access token provided');
+
+    const decodedToken = jwt.verify(accessToken, config.JWT_SECRET);
+    req.isAuthenticated = true;
+    req.user = decodedToken.user;
+  } catch (error) {
     req.isAuthenticated = false;
-    return next();
   }
-  req.isAuthenticated = true;
-  req.user = decodedToken.user;
   return next();
 };
