@@ -1,4 +1,4 @@
-import * as constant from './constants';
+import * as constants from './constants';
 import './aliases';
 import middlewareConfig from './middleware';
 import initializeExpress from './express';
@@ -13,5 +13,5 @@ const initializeServer = (app) => {
   }
 };
 
-export default constant;
+export default constants;
 export { middlewareConfig, initializeServer };
