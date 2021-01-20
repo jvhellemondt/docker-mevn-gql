@@ -5,7 +5,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 
 import graphql from '$/graphql';
-import { expressAuthentication } from '~/authentication/middlewares';
+import { expressAuthentication } from '~/authentication/middleware';
 
 export default app => {
   // App middleware
