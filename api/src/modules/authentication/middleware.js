@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import config from '$/setup';
 import { UserModel } from './models.js';
+import redis from '$/setup/redis';
 
 export const expressAuthentication = async (request, response, next) => {
   try {
@@ -13,7 +14,13 @@ export const expressAuthentication = async (request, response, next) => {
     const accessToken = authorization.substring(7, authorization.length);
     if (!accessToken) new Error('No access token in authorization');
 
-    const { userId } = jwt.verify(accessToken, config.JWT_SECRET);
+    const isExpired = await redis.get(`expiredToken:${accessToken}`);
+    if (isExpired) new Error('The access token has expired');
+
+    const {
+      userId,
+      exp,
+    } = jwt.verify(accessToken, config.JWT_SECRET);
     const user = await UserModel.findById(userId);
     if (!user) return new Error(`No user was found with id ${userId}`);
 

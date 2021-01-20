@@ -3,8 +3,9 @@ import { schemaComposer } from 'graphql-compose';
 
 import { UserModel } from './models.js';
 import config from '$/setup';
+import redis from '$/setup/redis';
 
-export const authenticateResolver = schemaComposer.createResolver({
+export const authenticate = schemaComposer.createResolver({
   kind: 'mutation',
   name: 'authenticate',
   args: {
@@ -36,17 +37,38 @@ export const authenticateResolver = schemaComposer.createResolver({
   },
 });
 
-export const authorizedResolver = schemaComposer.createResolver({
+export const isAuthorized = schemaComposer.createResolver({
   kind: 'query',
-  name: 'authorize',
+  name: 'isAuthorized',
   type: 'UserId!',
   resolve: async ({ context: { request } }) => {
     try {
       return {
-        userId: `${request.user}`,
+        userId: `${request.user.id}`,
       };
     } catch (error) {
       return Promise.reject(error);
     }
   },
 });
+
+export const logout = {
+  kind: 'mutation',
+  name: 'logout',
+  type: 'Success!',
+  resolve: async ({
+    context: {
+      request: {
+        user,
+        accessToken,
+      },
+    },
+  }) => {
+    try {
+      await redis.set(`expiredToken:${accessToken}`, user._id, 'EX', config.REDIS_TOKEN_EXPIRY);
+      return { success: true };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+};

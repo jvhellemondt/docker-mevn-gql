@@ -1,4 +1,4 @@
-const Redis = require('ioredis');
+import Redis from 'ioredis';
 import { REDIS_HOST, REDIS_PORT } from './constants';
 
 console.warn(`🌐 Connecting to Redis on redis://${REDIS_HOST}:${REDIS_PORT}`);
