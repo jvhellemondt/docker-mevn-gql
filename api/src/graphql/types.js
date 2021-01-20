@@ -1,6 +1,6 @@
-const { schemaComposer } = require('graphql-compose');
+import { schemaComposer } from 'graphql-compose';
 
 schemaComposer.createObjectTC({
-  name: 'Succeed',
-  fields: { succeed: 'Boolean!' },
+  name: 'Success',
+  fields: { success: 'Boolean!' },
 });
